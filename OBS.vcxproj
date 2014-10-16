@@ -287,6 +287,7 @@
     <ClCompile Include="Source\Hacks.cpp" />
     <ClCompile Include="Source\HTTPClient.cpp" />
     <ClCompile Include="Source\ImageProcessing.cpp" />
+    <ClCompile Include="Source\MultiRTMPPublisher.cpp" />
     <ClCompile Include="Source\ReplayBuffer.cpp" />
     <ClCompile Include="Source\libnsgif.c" />
     <ClCompile Include="Source\LogUploader.cpp" />
@@ -320,11 +321,12 @@
     <ClInclude Include="Source\CodeTokenizer.h" />
     <ClInclude Include="Source\CrashDumpHandler.h" />
     <ClInclude Include="Source\D3D10System.h" />
-    <ClInclude Include="Source\DataPacketHelpers.h"/>
+    <ClInclude Include="Source\DataPacketHelpers.h" />
     <ClInclude Include="Source\HTTPClient.h" />
     <ClInclude Include="Source\libnsgif.h" />
     <ClInclude Include="Source\LogUploader.h" />
     <ClInclude Include="Source\Main.h" />
+    <ClInclude Include="Source\MultiRTMPPublisher.h" />
     <ClInclude Include="Source\OBS.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\RTMPPublisher.h" />

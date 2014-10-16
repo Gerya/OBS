@@ -371,6 +371,8 @@
 #define IDC_USEGLOBALBITRATE            1208
 #define IDC_USEGLOBALBUFFERSIZE         1209
 #define IDC_IMPORT                      1210
+#define IDC_SERVER_BACKUP_STATIC        1211
+#define IDC_URL_BACKUP			        1212
 #define IDA_SOURCE_MOVEUP               40018
 #define IDA_SOURCE_MOVEDOWN             40019
 #define IDA_SOURCE_MOVETOTOP            40020

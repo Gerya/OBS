@@ -148,6 +148,9 @@ void SettingsPublish::ApplySettings()
     {
         strTemp = GetEditText(GetDlgItem(hwnd, IDC_URL));
         AppConfig->SetString(TEXT("Publish"), TEXT("URL"), strTemp);
+        strTemp = GetEditText(GetDlgItem(hwnd, IDC_URL_BACKUP));
+        strTemp.KillSpaces();
+        AppConfig->SetString(TEXT("Publish"), TEXT("URL_Backup"), strTemp);
     }
     else
     {
@@ -610,8 +613,10 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
                 {
                     ShowWindow(GetDlgItem(hwnd, IDC_SERVERLIST), SW_HIDE);
                     hwndTemp = GetDlgItem(hwnd, IDC_URL);
-                    LoadSettingEditString(hwndTemp, TEXT("Publish"), TEXT("URL"), NULL);
-                    SendDlgItemMessage(hwnd, IDC_SERVICE, CB_SETCURSEL, 0, 0);
+                    LoadSettingEditString(hwndTemp, TEXT("Publish"), TEXT("URL"), NULL);                
+                    hwndTemp = GetDlgItem(hwnd, IDC_URL_BACKUP);
+                    LoadSettingEditString(hwndTemp, TEXT("Publish"), TEXT("URL_Backup"), NULL);
+					SendDlgItemMessage(hwnd, IDC_SERVICE, CB_SETCURSEL, 0, 0);
                 }
                 else
                 {
@@ -668,6 +673,7 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
                     ShowWindow(GetDlgItem(hwnd, IDC_PLAYPATH_STATIC), SW_HIDE);
                     ShowWindow(GetDlgItem(hwnd, IDC_URL_STATIC), SW_HIDE);
                     ShowWindow(GetDlgItem(hwnd, IDC_SERVER_STATIC), SW_HIDE);
+                    ShowWindow(GetDlgItem(hwnd, IDC_SERVER_BACKUP_STATIC), SW_HIDE);
                     ShowWindow(GetDlgItem(hwnd, IDC_LOWLATENCYMODE), SW_HIDE);
                     ShowWindow(GetDlgItem(hwnd, IDC_AUTORECONNECT_TIMEOUT_STATIC), SW_HIDE);
                     ShowWindow(GetDlgItem(hwnd, IDC_AUTORECONNECT_TIMEOUT_EDIT), SW_HIDE);
@@ -857,11 +863,13 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
                             {
                                 ShowWindow(GetDlgItem(hwnd, IDC_SERVERLIST), SW_HIDE);
                                 ShowWindow(GetDlgItem(hwnd, IDC_URL), swShowControls);
+                                ShowWindow(GetDlgItem(hwnd, IDC_URL_BACKUP), swShowControls);
                             }
                             else
                             {
                                 ShowWindow(GetDlgItem(hwnd, IDC_SERVERLIST), swShowControls);
                                 ShowWindow(GetDlgItem(hwnd, IDC_URL), SW_HIDE);
+                                ShowWindow(GetDlgItem(hwnd, IDC_URL_BACKUP), SW_HIDE);
                             }
 
                             if(mode == 0 && data.mode == 1)
@@ -899,6 +907,8 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
                             ShowWindow(GetDlgItem(hwnd, IDC_PLAYPATH_STATIC), swShowControls);
                             ShowWindow(GetDlgItem(hwnd, IDC_URL_STATIC), swShowControls);
                             ShowWindow(GetDlgItem(hwnd, IDC_SERVER_STATIC), swShowControls);
+                            //ShowWindow(GetDlgItem(hwnd, IDC_URL_BACKUP), swShowControls);
+                            ShowWindow(GetDlgItem(hwnd, IDC_SERVER_BACKUP_STATIC), swShowControls);
                             //ShowWindow(GetDlgItem(hwnd, IDC_DASHBOARDLINK), swShowControls);
                             //ShowWindow(GetDlgItem(hwnd, IDC_DASHBOARDLINK_STATIC), swShowControls);
                             ShowWindow(GetDlgItem(hwnd, IDC_LOWLATENCYMODE), swShowControls);
@@ -930,10 +940,16 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
 
                                 SetWindowText(GetDlgItem(hwnd, IDC_URL), NULL);
                                 //SetWindowText(GetDlgItem(hwnd, IDC_DASHBOARDLINK), NULL);
+                                ShowWindow(GetDlgItem(hwnd, IDC_URL_BACKUP), SW_SHOW);
+                                ShowWindow(GetDlgItem(hwnd, IDC_SERVER_BACKUP_STATIC), SW_SHOW);
+
+                                SetWindowText(GetDlgItem(hwnd, IDC_URL_BACKUP), NULL);
                             }
                             else
                             {
                                 ShowWindow(GetDlgItem(hwnd, IDC_URL), SW_HIDE);
+                                ShowWindow(GetDlgItem(hwnd, IDC_URL_BACKUP), SW_HIDE);
+                                ShowWindow(GetDlgItem(hwnd, IDC_SERVER_BACKUP_STATIC), SW_HIDE);
 
                                 hwndTemp = GetDlgItem(hwnd, IDC_SERVERLIST);
                                 ShowWindow(hwndTemp, SW_SHOW);
@@ -1080,6 +1096,7 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
 
                     case IDC_PLAYPATH:
                     case IDC_URL:
+                    case IDC_URL_BACKUP:
                     case IDC_SAVEPATH:
                     case IDC_REPLAYBUFFERSAVEPATH:
                         if(HIWORD(wParam) == EN_CHANGE)
