@@ -26,7 +26,16 @@ void MultiRTMPPublisher::SendPacket(BYTE *data, UINT size, DWORD timestamp, Pack
 		this->pBackupPublisher->SendPacket(data, size, timestamp, type);
 	}
 }
-
+void MultiRTMPPublisher::RestartNetwork(int channel){
+	if (channel == 1){
+		delete this->pBackupPublisher;
+		this->pBackupPublisher = new RTMPPublisher(true);
+	}
+	else{
+		delete this->pMainPublisher;
+		this->pMainPublisher = new RTMPPublisher(false);
+	}
+}
 double MultiRTMPPublisher::GetPacketStrain() const { 
 	double result = this->pMainPublisher->GetPacketStrain();
 	if (this->pBackupPublisher!= NULL){

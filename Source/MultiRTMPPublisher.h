@@ -12,6 +12,7 @@ public:
 	QWORD GetCurrentSentBytes();
 	virtual DWORD NumDroppedFrames ()const;
 	virtual DWORD NumTotalVideoFrames()const;
+	virtual void RestartNetwork(int channel);
 
 private:
 	QWORD bytesSent;

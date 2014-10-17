@@ -2585,8 +2585,10 @@ INT_PTR CALLBACK OBS::ReconnectDialogProc(HWND hwnd, UINT message, WPARAM wParam
 
                 if(!ri->secondsLeft)
                 {
-                    if (AppConfig->GetInt(TEXT("Publish"), TEXT("ExperimentalReconnectMode")) == 1 && AppConfig->GetInt(TEXT("Publish"), TEXT("Delay")) == 0)
-                        App->RestartNetwork();
+					if (AppConfig->GetInt(TEXT("Publish"), TEXT("ExperimentalReconnectMode")) == 1 && AppConfig->GetInt(TEXT("Publish"), TEXT("Delay")) == 0){
+						App->RestartNetwork(0);
+						App->RestartNetwork(1);
+					}
                     else
                         SendMessage(hwndMain, OBS_RECONNECT, 0, 0);
                     EndDialog(hwnd, IDOK);
@@ -4138,7 +4140,7 @@ LRESULT CALLBACK OBS::OBSProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
                 if (!App->reconnectTimeout)
                 {
                     //fire immediately
-                    App->RestartNetwork();
+                    App->RestartNetwork(lParam);
                 }
                 else
                 {

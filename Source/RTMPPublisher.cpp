@@ -1136,7 +1136,7 @@ end:
 
 double RTMPPublisher::GetPacketStrain() const
 {
- 	return (curDataBufferLen / (double)dataBufferSize) * 100.0;
+	return (curDataBufferLen / (double)dataBufferSize) * 100.0;
 	/*if(packetWaitType >= PacketType_VideoHigh)
 		return min(100.0, dNetworkStrain*100.0);
 	else if(bNetworkStrain)
@@ -1196,7 +1196,7 @@ void RTMPPublisher::FatalSocketShutdown()
 	if (!bStopping)
 	{
 		if (AppConfig->GetInt(TEXT("Publish"), TEXT("ExperimentalReconnectMode")) == 1 && AppConfig->GetInt(TEXT("Publish"), TEXT("Delay")) == 0)
-			App->NetworkFailed();
+			App->NetworkFailed(this->isBackup == true ? 1 : 0);
 		else
 			App->PostStopMessage();
 	}
