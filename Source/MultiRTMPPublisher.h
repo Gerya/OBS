@@ -12,11 +12,11 @@ public:
 	QWORD GetCurrentSentBytes();
 	virtual DWORD NumDroppedFrames ()const;
 	virtual DWORD NumTotalVideoFrames()const;
-	virtual void RestartNetwork(int channel);
+	virtual void ResetChannel();
 
 private:
 	QWORD bytesSent;
 	DWORD framesRendered;
-	RTMPPublisher* pMainPublisher;
-	RTMPPublisher* pBackupPublisher;
+	std::unique_ptr<RTMPPublisher> pMainPublisher;
+	std::unique_ptr<RTMPPublisher> pBackupPublisher;
 };

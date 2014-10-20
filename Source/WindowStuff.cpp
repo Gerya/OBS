@@ -2586,8 +2586,7 @@ INT_PTR CALLBACK OBS::ReconnectDialogProc(HWND hwnd, UINT message, WPARAM wParam
                 if(!ri->secondsLeft)
                 {
 					if (AppConfig->GetInt(TEXT("Publish"), TEXT("ExperimentalReconnectMode")) == 1 && AppConfig->GetInt(TEXT("Publish"), TEXT("Delay")) == 0){
-						App->RestartNetwork(0);
-						App->RestartNetwork(1);
+						App->RestartNetwork();
 					}
                     else
                         SendMessage(hwndMain, OBS_RECONNECT, 0, 0);
@@ -4121,7 +4120,7 @@ LRESULT CALLBACK OBS::OBSProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
             break;
 
         case OBS_NETWORK_FAILED:
-            if ((App->bFirstConnect && App->totalStreamTime < 30000) || !App->bAutoReconnect)
+            if ((App->bFirstConnect && App->totalStreamTime < 3000) || !App->bAutoReconnect)
             {
                 //no reconnect, or the connection died very early in the stream
                 App->Stop();
@@ -4140,7 +4139,7 @@ LRESULT CALLBACK OBS::OBSProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
                 if (!App->reconnectTimeout)
                 {
                     //fire immediately
-                    App->RestartNetwork(lParam);
+                    App->RestartNetwork();
                 }
                 else
                 {

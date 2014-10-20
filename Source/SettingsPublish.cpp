@@ -151,6 +151,7 @@ void SettingsPublish::ApplySettings()
         strTemp = GetEditText(GetDlgItem(hwnd, IDC_URL_BACKUP));
         strTemp.KillSpaces();
         AppConfig->SetString(TEXT("Publish"), TEXT("URL_Backup"), strTemp);
+		AppConfig->SetInt(TEXT("Publish"), TEXT("ExperimentalReconnectMode"), 1);
     }
     else
     {

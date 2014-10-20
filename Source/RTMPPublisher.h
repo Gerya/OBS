@@ -170,7 +170,7 @@ public:
 	RTMPPublisher(bool isBackup);
 	bool Init(UINT tcpBufferSize);
 	~RTMPPublisher();
-
+	bool isFailed;
 	void SendPacket(BYTE *data, UINT size, DWORD timestamp, PacketType type);
 
 	void BeginPublishing();

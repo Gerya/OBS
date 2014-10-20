@@ -2145,16 +2145,16 @@ NetworkStream* CreateRTMPPublisher();
 NetworkStream* CreateDelayedPublisher(DWORD delayTime);
 NetworkStream* CreateNullNetwork();
 
-void OBS::RestartNetwork(int channel)
+void OBS::RestartNetwork()
 {
     OSEnterMutex(App->hStartupShutdownMutex);
 
     //delete the old one
-    App->network.reset();
+    //App->network.reset();
 
     //start up a new one
     App->bSentHeaders = false;
     //App->network.reset(CreateRTMPPublisher());
-	App->network->RestartNetwork(channel);
+	App->network->ResetChannel();
     OSLeaveMutex(App->hStartupShutdownMutex);
 }

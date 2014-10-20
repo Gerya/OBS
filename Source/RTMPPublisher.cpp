@@ -1195,8 +1195,9 @@ void RTMPPublisher::FatalSocketShutdown()
 
 	if (!bStopping)
 	{
+		this->isFailed = true;
 		if (AppConfig->GetInt(TEXT("Publish"), TEXT("ExperimentalReconnectMode")) == 1 && AppConfig->GetInt(TEXT("Publish"), TEXT("Delay")) == 0)
-			App->NetworkFailed(this->isBackup == true ? 1 : 0);
+			App->NetworkFailed();
 		else
 			App->PostStopMessage();
 	}

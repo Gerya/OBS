@@ -122,7 +122,7 @@ public:
 	virtual QWORD GetCurrentSentBytes()=0;
 	virtual DWORD NumDroppedFrames() const=0;
 	virtual DWORD NumTotalVideoFrames() const=0;
-	virtual void RestartNetwork(int channel){}
+	virtual void ResetChannel(){}
 };
 
 //-------------------------------------------------------------------
@@ -1128,7 +1128,7 @@ private:
 
 	void ReloadIniSettings();
 
-	void RestartNetwork(int channel);
+	void RestartNetwork();
 
 public:
 	OBS();
@@ -1161,7 +1161,7 @@ public:
 	char* EncMetaData(char *enc, char *pend, bool bFLVFile=false);
 
 	inline void PostStopMessage(bool forceStop=false) {if(hwndMain) PostMessage(hwndMain, OBS_REQUESTSTOP, forceStop ? 1 : 0, 0);}
-	inline void NetworkFailed(int channel) { if (hwndMain) PostMessage(hwndMain, OBS_NETWORK_FAILED, 0, channel); }
+	inline void NetworkFailed() { if (hwndMain) PostMessage(hwndMain, OBS_NETWORK_FAILED, 0, 0); }
 
 	void GetBaseSize(UINT &width, UINT &height) const;
 

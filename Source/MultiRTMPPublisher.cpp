@@ -6,60 +6,72 @@
 
 MultiRTMPPublisher::MultiRTMPPublisher()
 {
-	this->pMainPublisher = new RTMPPublisher(false);
+	this->pMainPublisher.reset(new RTMPPublisher(false));
 	if (AppConfig->GetString(TEXT("Publish"), TEXT("URL_BACKUP")).IsValid()){
-		this->pBackupPublisher = new RTMPPublisher(true);
+		this->pBackupPublisher.reset(new RTMPPublisher(true));
 	}	
 }
 
 MultiRTMPPublisher::~MultiRTMPPublisher()
 {
-	delete this->pMainPublisher;
-	if (this->pBackupPublisher != NULL){
-		delete this->pBackupPublisher;
+	this->pMainPublisher.reset();
+	if (this->pBackupPublisher){
+		this->pBackupPublisher.reset();
 	}
 }
 
 void MultiRTMPPublisher::SendPacket(BYTE *data, UINT size, DWORD timestamp, PacketType type) { 
-	this->pMainPublisher->SendPacket(data, size, timestamp, type);
-	if (this->pBackupPublisher != NULL){
+	if (this->pMainPublisher){
+		this->pMainPublisher->SendPacket(data, size, timestamp, type);
+	}
+	if (this->pBackupPublisher){
 		this->pBackupPublisher->SendPacket(data, size, timestamp, type);
 	}
 }
-void MultiRTMPPublisher::RestartNetwork(int channel){
-	if (channel == 1){
-		delete this->pBackupPublisher;
-		this->pBackupPublisher = new RTMPPublisher(true);
+void MultiRTMPPublisher::ResetChannel(){
+	if (this->pBackupPublisher->isFailed){
+		this->pBackupPublisher.reset();
+		this->pBackupPublisher.reset(new RTMPPublisher(true));
+		//this->pBackupPublisher = new RTMPPublisher(true);
 	}
-	else{
-		delete this->pMainPublisher;
-		this->pMainPublisher = new RTMPPublisher(false);
+	if (this->pMainPublisher->isFailed){
+		this->pMainPublisher.reset();
+		this->pMainPublisher.reset(new RTMPPublisher(false));
+		//this->pMainPublisher = new RTMPPublisher(false);
 	}
 }
 double MultiRTMPPublisher::GetPacketStrain() const { 
-	double result = this->pMainPublisher->GetPacketStrain();
-	if (this->pBackupPublisher!= NULL){
+	double result = 0;
+	if(this->pMainPublisher)
+		result = this->pMainPublisher->GetPacketStrain();
+	if (this->pBackupPublisher){
 		result += this->pBackupPublisher->GetPacketStrain();
 	}
 	return result;
 }
 QWORD MultiRTMPPublisher::GetCurrentSentBytes() {
-	QWORD result = this->pMainPublisher->GetCurrentSentBytes();
-	if (this->pBackupPublisher != NULL){
+	QWORD result = 0;
+	if(this->pMainPublisher)
+		result = this->pMainPublisher->GetCurrentSentBytes();
+	if (this->pBackupPublisher){
 		result += this->pBackupPublisher->GetCurrentSentBytes();
 	}
 	return result;
 }
 DWORD MultiRTMPPublisher::NumDroppedFrames() const {
-	DWORD result = this->pMainPublisher->NumDroppedFrames();
-	if (this->pBackupPublisher != NULL){
+	DWORD result = 0;
+	if (this->pMainPublisher)
+		result = this->pMainPublisher->NumDroppedFrames();
+	if (this->pBackupPublisher){
 		result += this->pBackupPublisher->NumDroppedFrames();
 	}
 	return result;
 }
 DWORD MultiRTMPPublisher::NumTotalVideoFrames() const {
-	DWORD result = this->pMainPublisher->NumTotalVideoFrames();
-	if (this->pBackupPublisher != NULL){
+	DWORD result = 0;
+	if(this->pMainPublisher)
+		result = this->pMainPublisher->NumTotalVideoFrames();
+	if (this->pBackupPublisher){
 		result += this->pBackupPublisher->NumTotalVideoFrames();
 	}
 	return result;
